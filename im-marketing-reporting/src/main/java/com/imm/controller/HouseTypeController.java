@@ -1,9 +1,10 @@
 package com.imm.controller;
 
-import static com.imm.utility.ConstantUtils.*;
-import static com.imm.utility.Utils.*;
+import static com.imm.utility.ConstantUtils.ADD;
+import static com.imm.utility.ConstantUtils.DELETE;
+import static com.imm.utility.ConstantUtils.UPDATE;
 
-
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.imm.entity.HouseType;
 import com.imm.repository.HouseTypeRepository;
-import com.imm.utility.ValuesObject;
+import com.imm.utility.Response;
 
 @RestController
 @RequestMapping("/im-workspace")
@@ -28,59 +29,37 @@ public class HouseTypeController {
 
 		@Autowired
 		private HouseTypeRepository houseTypeRepository;
+	
+		@Resource
+		Response<HouseType> response;
+		
 		private static final String BASED_PATH = "/house-type";
 
 		@GetMapping(BASED_PATH)
 		private ResponseEntity<?> getAll() {
-			ValuesObject<?> houseTypes = ValuesObject.builder()
-					.outCode(0)
-					.message(successMessage(SUCCESS_GET , " House type "))
-					.body(houseTypeRepository.findAll())
-					.build();
-			return ResponseEntity.ok(houseTypes);
+			return response.get(houseTypeRepository.findAll(), "House type ");
 		}
 
 		@GetMapping(BASED_PATH + "/{id}")
 		private ResponseEntity<?> getById(@Valid @PathVariable("id") Long id) {
-
-			ValuesObject<?> houseTypes = ValuesObject.builder()
-					.outCode(0)
-					.message(successMessage(SUCCESS_GET , " House type "))
-					.body(houseTypeRepository.findById(id))
-					.build();
-			return ResponseEntity.ok(houseTypes);
+			return response.get(houseTypeRepository.findById(id), "House type ");
 		}
 
 		@PostMapping(BASED_PATH + "/" + ADD)
-		private ResponseEntity<?> add(@Valid @RequestBody HouseType hoseType) {
-			houseTypeRepository.save(hoseType);
-			ValuesObject<?> houseTypes = ValuesObject.builder()
-					.outCode(0)
-					.message(successMessage(SUCCESS_SAVE , " House type "))
-					.body(hoseType)
-					.build();
-			return ResponseEntity.ok(houseTypes);
+		private ResponseEntity<?> add(@Valid @RequestBody HouseType houseType) {
+			houseTypeRepository.save(houseType);
+			return response.insert(houseType, "House type ");
 		}
 
 		@PutMapping(BASED_PATH + "/" + UPDATE)
-		private ResponseEntity<?> update(@Valid @RequestBody HouseType hoseType) {
-			houseTypeRepository.save(hoseType);
-			ValuesObject<?> houseTypes = ValuesObject.builder()
-					.outCode(0)
-					.message(successMessage(SUCCESS_UPDATE , " House type "))
-					.body(hoseType)
-					.build();
-			return ResponseEntity.ok(houseTypes);
+		private ResponseEntity<?> update(@Valid @RequestBody HouseType houseType) {
+			houseTypeRepository.save(houseType);
+			return response.update(houseType, "House type ");
 		}
 
 		@DeleteMapping(BASED_PATH + "/" + DELETE)
-		private ResponseEntity<?> delete(@Valid @RequestBody HouseType hoseType) {
-			houseTypeRepository.delete(hoseType);
-			ValuesObject<?> houseTypes = ValuesObject.builder()
-					.outCode(0)
-					.message(successMessage(SUCCESS_DELETE , " House type "))
-					.body(hoseType)
-					.build();
-			return ResponseEntity.ok(houseTypes);
+		private ResponseEntity<?> delete(@Valid @RequestBody HouseType houseType) {
+			houseTypeRepository.delete(houseType);
+			return response.delete(houseType, "House type ");
 		}
 }
