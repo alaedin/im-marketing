@@ -2,9 +2,11 @@ package com.imm.controller;
 
 import static com.imm.utility.ConstantUtils.ADD;
 import static com.imm.utility.ConstantUtils.DELETE;
+import static com.imm.utility.ConstantUtils.RESSOURCE_ALREADY_EXISTS;
+import static com.imm.utility.ConstantUtils.RESSOURCE_NOT_FOUND;
 import static com.imm.utility.ConstantUtils.UPDATE;
+import static com.imm.utility.Utils.message;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.imm.entity.Address;
+import com.imm.exception.DataResourceException;
 import com.imm.repository.AddressRepository;
 import com.imm.utility.Response;
 
@@ -29,36 +32,47 @@ public class AddressController {
 	@Autowired
 	private AddressRepository addressRepository;
 	
-	@Resource
+	@Autowired
 	Response<Address> response;
 	
 	private static final String BASED_PATH = "/address";
 
+	private static final String OBJECT_NAME =  "address";
+
 	@GetMapping(BASED_PATH)
 	private ResponseEntity<?> getAll() {
-		return response.get(addressRepository.findAll(), "address");
+		return response.get(addressRepository.findAll(), OBJECT_NAME);
 	}
 
 	@GetMapping(BASED_PATH + "/{id}")
 	private ResponseEntity<?> getById(@Valid @PathVariable("id") Long id) {
-		return response.get(addressRepository.findById(id), "address");
+		return response.get(addressRepository.findById(id), OBJECT_NAME);
 	}
 
 	@PostMapping(BASED_PATH + "/" + ADD)
 	private ResponseEntity<?> add(@Valid @RequestBody Address address) {
+		if (addressRepository.existsById(address.getId())) {
+			throw new DataResourceException(message(OBJECT_NAME,RESSOURCE_ALREADY_EXISTS, address.getId()));
+		}
 		addressRepository.save(address);
-		return response.insert(address, "address");
+		return response.insert(address, OBJECT_NAME);
 	}
 
 	@PutMapping(BASED_PATH + "/" + UPDATE)
 	private ResponseEntity<?> update(@Valid @RequestBody Address address) {
+		if (!addressRepository.existsById(address.getId())) {
+			throw new DataResourceException(message(OBJECT_NAME,RESSOURCE_NOT_FOUND, address.getId()));
+		}
 		addressRepository.save(address);
-		return response.update(address, "address");
+		return response.update(address, OBJECT_NAME);
 	}
 
 	@DeleteMapping(BASED_PATH + "/" + DELETE)
 	private ResponseEntity<?> delete(@Valid @RequestBody Address address) {
+		if (!addressRepository.existsById(address.getId())) {
+			throw new DataResourceException(message(OBJECT_NAME,RESSOURCE_NOT_FOUND, address.getId()));
+		}
 		addressRepository.delete(address);
-		return response.delete(null, "address");
+		return response.delete(address, OBJECT_NAME);
 	}
 }

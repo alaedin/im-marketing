@@ -7,7 +7,7 @@ import static com.imm.utility.ConstantUtils.SUCCESS_GET;
 import static com.imm.utility.ConstantUtils.SUCCESS_SAVE;
 import static com.imm.utility.ConstantUtils.SUCCESS_UPDATE;
 import static com.imm.utility.ConstantUtils.UPDATE;
-import static com.imm.utility.Utils.successMessage;
+import static com.imm.utility.Utils.message;
 
 import javax.validation.Valid;
 
@@ -38,7 +38,7 @@ public class PersonAppointmentController {
 	private ResponseEntity<?> getAll() {
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Person Appointment"))
+				.message(message(SUCCESS_GET, "Person Appointment"))
 				.body(personAppointmentRepository.findAll())
 				.build();
 		return ResponseEntity.ok(persons);
@@ -49,7 +49,7 @@ public class PersonAppointmentController {
 
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Person Appointment"))
+				.message(message(SUCCESS_GET, "Person Appointment"))
 				.body(personAppointmentRepository.findById(id))
 				.build();
 		return ResponseEntity.ok(persons);
@@ -60,7 +60,7 @@ public class PersonAppointmentController {
 		personAppointmentRepository.save(personAppointment);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_SAVE, "Person Appointment"))
+				.message(message(SUCCESS_SAVE, "Person Appointment"))
 				.body(personAppointment)
 				.build();
 		return ResponseEntity.ok(persons);
@@ -71,7 +71,7 @@ public class PersonAppointmentController {
 		personAppointmentRepository.save(personAppointment);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_UPDATE, "Person Appointment"))
+				.message(message(SUCCESS_UPDATE, "Person Appointment"))
 				.body(personAppointment)
 				.build();
 		return ResponseEntity.ok(persons);
@@ -82,7 +82,7 @@ public class PersonAppointmentController {
 		personAppointmentRepository.delete(personAppointment);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_DELETE, "Person Appointment"))
+				.message(message(SUCCESS_DELETE, "Person Appointment"))
 				.body(personAppointment)
 				.build();
 		return ResponseEntity.ok(persons);

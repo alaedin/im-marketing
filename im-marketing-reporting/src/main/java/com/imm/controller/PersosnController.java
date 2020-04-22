@@ -7,7 +7,7 @@ import static com.imm.utility.ConstantUtils.SUCCESS_GET;
 import static com.imm.utility.ConstantUtils.SUCCESS_SAVE;
 import static com.imm.utility.ConstantUtils.SUCCESS_UPDATE;
 import static com.imm.utility.ConstantUtils.UPDATE;
-import static com.imm.utility.Utils.successMessage;
+import static com.imm.utility.Utils.message;
 
 import javax.validation.Valid;
 
@@ -38,7 +38,7 @@ public class PersosnController {
 	private ResponseEntity<?> getAll() {
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Person"))
+				.message(message(SUCCESS_GET, "Person"))
 				.body(personRepository.findAll())
 				.build();
 		return ResponseEntity.ok(persons);
@@ -49,7 +49,7 @@ public class PersosnController {
 
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Person"))
+				.message(message(SUCCESS_GET, "Person"))
 				.body(personRepository.findById(id))
 				.build();
 		return ResponseEntity.ok(persons);
@@ -60,7 +60,7 @@ public class PersosnController {
 		personRepository.save(person);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_SAVE, "Person"))
+				.message(message(SUCCESS_SAVE, "Person"))
 				.body(person)
 				.build();
 		return ResponseEntity.ok(persons);
@@ -71,7 +71,7 @@ public class PersosnController {
 		personRepository.save(person);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_UPDATE, "Person"))
+				.message(message(SUCCESS_UPDATE, "Person"))
 				.body(person)
 				.build();
 		return ResponseEntity.ok(persons);
@@ -82,7 +82,7 @@ public class PersosnController {
 		personRepository.delete(person);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_DELETE, "Person"))
+				.message(message(SUCCESS_DELETE, "Person"))
 				.body(person)
 				.build();
 		return ResponseEntity.ok(persons);

@@ -6,6 +6,7 @@ import static com.imm.utility.ConstantUtils.SUCCESS_SAVE;
 import static com.imm.utility.ConstantUtils.SUCCESS_UPDATE;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@Service
 public class Response<T> {
 	
 	public ResponseEntity<?> get(Object value,String objectName){
@@ -35,7 +37,7 @@ public class Response<T> {
 	private ResponseEntity<?>respond(Object value, String objectName,String response ){
 		ValuesObject<?> valuesObject = ValuesObject.builder()
 				.outCode(0)
-				.message(Utils.successMessage(response, objectName))
+				.message(Utils.message(response, objectName))
 				.body(value)
 				.build();
 	return ResponseEntity.ok(valuesObject);

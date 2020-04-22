@@ -7,7 +7,7 @@ import static com.imm.utility.ConstantUtils.SUCCESS_GET;
 import static com.imm.utility.ConstantUtils.SUCCESS_SAVE;
 import static com.imm.utility.ConstantUtils.SUCCESS_UPDATE;
 import static com.imm.utility.ConstantUtils.UPDATE;
-import static com.imm.utility.Utils.successMessage;
+import static com.imm.utility.Utils.message;
 
 import javax.validation.Valid;
 
@@ -38,7 +38,7 @@ public class PersonRoleController {
 	private ResponseEntity<?> getAll() {
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Person role"))
+				.message(message(SUCCESS_GET, "Person role"))
 				.body(personRoleRepository.findAll())
 				.build();
 		return ResponseEntity.ok(persons);
@@ -49,7 +49,7 @@ public class PersonRoleController {
 
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Person role"))
+				.message(message(SUCCESS_GET, "Person role"))
 				.body(personRoleRepository.findById(id))
 				.build();
 		return ResponseEntity.ok(persons);
@@ -60,7 +60,7 @@ public class PersonRoleController {
 		personRoleRepository.save(personRole);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_SAVE, "Person role"))
+				.message(message(SUCCESS_SAVE, "Person role"))
 				.body(personRole)
 				.build();
 		return ResponseEntity.ok(persons);
@@ -71,7 +71,7 @@ public class PersonRoleController {
 		personRoleRepository.save(personRole);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_UPDATE, "Person role"))
+				.message(message(SUCCESS_UPDATE, "Person role"))
 				.body(personRole)
 				.build();
 		return ResponseEntity.ok(persons);
@@ -82,7 +82,7 @@ public class PersonRoleController {
 		personRoleRepository.delete(personRole);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_DELETE, "Person role"))
+				.message(message(SUCCESS_DELETE, "Person role"))
 				.body(personRole)
 				.build();
 		return ResponseEntity.ok(persons);

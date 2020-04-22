@@ -7,7 +7,7 @@ import static com.imm.utility.ConstantUtils.SUCCESS_GET;
 import static com.imm.utility.ConstantUtils.SUCCESS_SAVE;
 import static com.imm.utility.ConstantUtils.SUCCESS_UPDATE;
 import static com.imm.utility.ConstantUtils.UPDATE;
-import static com.imm.utility.Utils.successMessage;
+import static com.imm.utility.Utils.message;
 
 import javax.validation.Valid;
 
@@ -39,7 +39,7 @@ public class CompanyController {
 	private ResponseEntity<?> getAll() {
 		ValuesObject<?> companies = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Company"))
+				.message(message(SUCCESS_GET, "Company"))
 				.body(companyRepository.findAll())
 				.build();
 		return ResponseEntity.ok(companies);
@@ -50,7 +50,7 @@ public class CompanyController {
 
 		ValuesObject<?> companies = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Company"))
+				.message(message(SUCCESS_GET, "Company"))
 				.body(companyRepository.findById(id))
 				.build();
 		return ResponseEntity.ok(companies);
@@ -61,7 +61,7 @@ public class CompanyController {
 		companyRepository.save(company);
 		ValuesObject<?> companies = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_SAVE, "Company"))
+				.message(message(SUCCESS_SAVE, "Company"))
 				.body(company)
 				.build();
 		return ResponseEntity.ok(companies);
@@ -72,7 +72,7 @@ public class CompanyController {
 		companyRepository.save(company);
 		ValuesObject<?> companies = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_UPDATE, "Company"))
+				.message(message(SUCCESS_UPDATE, "Company"))
 				.body(company)
 				.build();
 		return ResponseEntity.ok(companies);
@@ -83,7 +83,7 @@ public class CompanyController {
 		companyRepository.delete(company);
 		ValuesObject<?> companies = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_DELETE, "Company"))
+				.message(message(SUCCESS_DELETE, "Company"))
 				.body(company)
 				.build();
 		return ResponseEntity.ok(companies);

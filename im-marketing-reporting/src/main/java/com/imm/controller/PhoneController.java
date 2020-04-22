@@ -7,7 +7,7 @@ import static com.imm.utility.ConstantUtils.SUCCESS_GET;
 import static com.imm.utility.ConstantUtils.SUCCESS_SAVE;
 import static com.imm.utility.ConstantUtils.SUCCESS_UPDATE;
 import static com.imm.utility.ConstantUtils.UPDATE;
-import static com.imm.utility.Utils.successMessage;
+import static com.imm.utility.Utils.message;
 
 import javax.validation.Valid;
 
@@ -39,7 +39,7 @@ public class PhoneController {
 	private ResponseEntity<?> getAll() {
 		ValuesObject<?> phones = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Phone"))
+				.message(message(SUCCESS_GET, "Phone"))
 				.body(phoneRepository.findAll())
 				.build();
 		return ResponseEntity.ok(phones);
@@ -50,7 +50,7 @@ public class PhoneController {
 
 		ValuesObject<?> phones = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_GET, "Phone"))
+				.message(message(SUCCESS_GET, "Phone"))
 				.body(phoneRepository.findById(id))
 				.build();
 		return ResponseEntity.ok(phones);
@@ -61,7 +61,7 @@ public class PhoneController {
 		phoneRepository.save(phone);
 		ValuesObject<?> phones = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_SAVE, "Phone"))
+				.message(message(SUCCESS_SAVE, "Phone"))
 				.body(phone)
 				.build();
 		return ResponseEntity.ok(phones);
@@ -72,7 +72,7 @@ public class PhoneController {
 		phoneRepository.save(phone);
 		ValuesObject<?> phones = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_UPDATE, "Phone"))
+				.message(message(SUCCESS_UPDATE, "Phone"))
 				.body(phone)
 				.build();
 		return ResponseEntity.ok(phones);
@@ -83,7 +83,7 @@ public class PhoneController {
 		phoneRepository.delete(phone);
 		ValuesObject<?> phones = ValuesObject.builder()
 				.outCode(0)
-				.message(successMessage(SUCCESS_DELETE, "Phone"))
+				.message(message(SUCCESS_DELETE, "Phone"))
 				.body(phone)
 				.build();
 		return ResponseEntity.ok(phones);
