@@ -1,0 +1,66 @@
+version:  '3'
+services:
+#  imm-nginx:
+#   container_name: imm-nginx
+#   image: nginx:1.13
+#   restart: always
+#   ports:
+#   - 80:80
+#   - 443:443
+#   volumes:
+#   - ./nginx/conf.d:/etc/nginx/conf.d
+#   depends_on:
+#   - imm-app
+ 
+  imm-mysql:
+   container_name: imm-mysql
+   image: mysql/mysql-server:8.0
+   environment:
+     MYSQL_DATABASE: immarketing
+     MYSQL_USER: root
+     MYSQL_PASSWORD: root
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_ROOT_HOST: "%"
+   ports:
+     - 3306:3306
+   networks:
+     - backend
+   restart: always
+   volumes:
+     - mysql-data:/var/lib/mysql
+   expose:
+     - 3306 
+  imm-phpmyadmin:
+    container_name: imm-phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.0.1
+    ports:
+      - 80:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      
+#  imm-app:
+#    image: imm_app
+#    container_name: imm-app
+#    restart: always
+#    build:
+#      context: ./ 
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./im-marketing:/im-marketing
+#      - ~/.m2:/root/.m2
+#    expose:
+#      - "10001"
+#    command: mvn clean spring-boot:run
+#    networks:
+#      - backend
+#    environment:
+#      - COUCHBASE_URI= imm-mysql
+#    depends_on:
+#      - imm-mysql
+
+volumes:
+  mysql-data:
+      
+networks:
+  backend:
