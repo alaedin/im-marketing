@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.imm</groupId>
-	<artifactId>im-marketing-reporting</artifactId>
+	<artifactId>im-marketing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>im-marketing-reporting</name>
+	<name>im-marketing</name>
 	<description>project test</description>
 
 	<properties>
@@ -37,6 +37,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-configuration-processor -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 
 		<dependency>
