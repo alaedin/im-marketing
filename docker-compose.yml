@@ -1,16 +1,16 @@
 version:  '3'
 services:
-#  imm-nginx:
-#   container_name: imm-nginx
-#   image: nginx:1.13
-#   restart: always
-#   ports:
-#   - 80:80
-#   - 443:443
-#   volumes:
-#   - ./nginx/conf.d:/etc/nginx/conf.d
-#   depends_on:
-#   - imm-app
+  imm-nginx:
+   container_name: imm-nginx
+   image: nginx:1.19
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+   depends_on:
+   - imm-app
  
   imm-mysql:
    container_name: imm-mysql
@@ -20,7 +20,7 @@ services:
      MYSQL_USER: root
      MYSQL_PASSWORD: root
      MYSQL_ROOT_PASSWORD: root
-     MYSQL_ROOT_HOST: "%"
+     MYSQL_ROOT_HOST: '%'
    ports:
      - 3306:3306
    networks:
@@ -37,30 +37,40 @@ services:
     container_name: imm-phpmyadmin
     image: phpmyadmin/phpmyadmin:5.0.1
     ports:
-      - 80:80
+      - 10002:80
+    links:
+      - imm-mysql
     environment:
-      MYSQL_USERNAME: root
+      PMA_HOST: imm-mysql
+      PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
+    restart: always
+    networks:
+      - backend
       
-#  imm-app:
-#    image: imm_app
-#    container_name: imm-app
-#    restart: always
-#    build:
-#      context: ./ 
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./im-marketing:/im-marketing
-#      - ~/.m2:/root/.m2
-#    expose:
-#      - "10001"
-#    command: mvn clean spring-boot:run
-#    networks:
-#      - backend
-#    environment:
-#      - COUCHBASE_URI= imm-mysql
-#    depends_on:
-#      - imm-mysql
+  imm-app:
+    image: imm_app
+    container_name: imm-app
+    restart: always
+    build:
+      context: ./ 
+      dockerfile: Dockerfile
+    volumes:
+      - ./im-marketing:/im-marketing
+      - ~/.m2:/root/.m2
+    ports:
+      - 10001:10001
+    expose:
+      - "10001"
+    command: mvn clean spring-boot:run
+    environment:
+     SPRING_DATASOURCE_USERNAME: root
+     SPRING_DATASOURCE_PASSWORD: root   
+     SPRING_DATASOURCE_URL: jdbc:mysql://imm-mysql:3306/immarketing?createDatabaseIfNotExist=true&serverTimezone=CET
+    networks:
+      - backend
+    depends_on:
+      - imm-mysql
 
 volumes:
   mysql-data:

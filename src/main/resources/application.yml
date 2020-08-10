@@ -6,7 +6,7 @@ spring:
     name: reporting
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.7:3306/immarketing?CreateDatabaseIfNotExist=true&serverTimezone=CET 
+    url: jdbc:mysql://imm-mysql:3306/immarketing?createDatabaseIfNotExist=true&serverTimezone=CET 
     username: develop
     password: root
   jpa:
