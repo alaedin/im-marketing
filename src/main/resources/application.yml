@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://imm-mysql:3306/immarketing?createDatabaseIfNotExist=true&serverTimezone=CET 
-    username: develop
+    username: root
     password: root
   jpa:
     hibernate:
