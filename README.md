@@ -13,5 +13,8 @@ Step 1:
        documentation-service
        auth-service
        im-marketing
-    
+
+# Call Services
+
+${host_name}:${port}//${service_name}/${URI}
 
