@@ -5,9 +5,12 @@ spring:
     config:
       server:
         git:
-          uri: file:///home/alaeddine/pfe/my-config
+        # this url is updated on startup in main class to be the {project_path}/im-configuration 
+          uri: ${workspace_loc:config-server}/im-configuration
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+#spring.cloud.config.server.git.uri
