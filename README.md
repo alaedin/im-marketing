@@ -16,5 +16,5 @@ Step 1:
 
 # Call Services
 
-${host_name}:${port}//${service_name}/${URI}
+${host_name}:${proxy_servie_port}//${service_name}/${URI}
 
