@@ -7,12 +7,12 @@ How to run
 
 Step 1:
    start: 
-       config-service
-       discovery-service
-       proxy-servie
-       documentation-service
-       auth-service
-       im-marketing
+      . config-service
+      . discovery-service
+      . proxy-servie
+      . documentation-service
+      . auth-service
+      . im-marketing
 
 # Call Services
 
