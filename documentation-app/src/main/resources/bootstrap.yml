@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: documentation-apps
-  cloud:
-    config:
-      uri:
-      - http://localhost:10002
