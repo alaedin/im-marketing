@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: discovery-service
+  cloud:
+    config:
+      uri:
+      - http://localhost:10002
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false

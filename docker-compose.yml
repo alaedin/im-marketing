@@ -49,11 +49,11 @@ services:
       - backend
       
   imm-app:
-    image: imm_app
+    image: nginx:1.19
     container_name: imm-app
     restart: always
     build:
-      context: ./ 
+      context: ./im-marketing/
       dockerfile: Dockerfile
     volumes:
       - ./im-marketing:/im-marketing
@@ -71,9 +71,26 @@ services:
       - backend
     depends_on:
       - imm-mysql
+  
+  nginx:
+    container_name: imm-front
+    image: imm_front
+    build: 
+      context: ./imm-front/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+
+    networks:
+      - frontend
+  
 
 volumes:
   mysql_data: 
       
 networks:
   backend:
+  frontend:
+    driver: bridge
+
