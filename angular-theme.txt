@@ -1,0 +1,11 @@
+
+skeleton angular :
+/home/alaeddine/Downloads/themeforest-metronic-responsive/app/themeforest-4021469-metronic-responsive-admin-dashboard-template/metronic_v6.0.1/theme/angular/dist/skeleton
+
+
+
+
+
+
+projet :
+/home/alaeddine/Downloads/themeforest-metronic-responsive/app/themeforest-4021469-metronic-responsive-admin-dashboard-template/metronic_v6.0.1/theme/angular/dist/default
