@@ -17,4 +17,3 @@ Step 1:
 # Call Services
 
 ${host_name}:${proxy_servie_port}//${service_name}/${URI}
-
