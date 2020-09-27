@@ -34,7 +34,7 @@ import com.imm.auth.utils.Response;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
-public class AuthRestAPIs {
+public class AuthRestAPIsController {
 
 	@Autowired
 	AuthenticationManager authenticationManager;

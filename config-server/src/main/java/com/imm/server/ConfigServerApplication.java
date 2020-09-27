@@ -9,8 +9,6 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 public class ConfigServerApplication {
 
 	public static void main(String[] args) {
-		System.setProperty("spring.cloud.config.server.git.uri",
-				System.getProperty("user.dir") + "/" + "im-configuration");
 
 		SpringApplication.run(ConfigServerApplication.class, args);
 	}

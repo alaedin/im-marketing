@@ -1,12 +1,16 @@
 package com.imm.marketings.entity;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,15 +24,30 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Entity
-public class PersonAppointment {
+public class Client {
 
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Person person;
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	
+	private String firstName;
+	
+	private String lastName;
+	
+	private Date birthdate;
+	
+	private String address;
+	
+	@Email
+	private String email;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Phone phone;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "client")
+	@JsonIgnoreProperties(value={ "appointment" }, allowSetters= true)
 	private Appointment appointment;
+	
 }

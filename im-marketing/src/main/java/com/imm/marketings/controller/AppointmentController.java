@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.imm.marketings.repository.AppointmentRepository;
 import com.imm.marketings.utility.Response;
 
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/im-workspace")
 public class AppointmentController {
@@ -43,7 +45,10 @@ public class AppointmentController {
 	private ResponseEntity<?> getById(@Valid @PathVariable("id") Long id) {
 		return response.get(appointmentRepository.findById(id), "appointment");
 	}
-
+	@GetMapping(BASED_PATH + "/person/{personId}")
+	private ResponseEntity<?> getByPerson(@Valid @PathVariable("personId") Long personId) {
+		return response.get(appointmentRepository.findByPerson_id(personId), "appointment");
+	}
 	@PostMapping(BASED_PATH + "/" + ADD)
 	private ResponseEntity<?> add(@Valid @RequestBody Appointment appointment) {
 		appointmentRepository.save(appointment);

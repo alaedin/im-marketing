@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.imm.auth.entity.Role;
-import com.imm.auth.entity.RoleName;
 import com.imm.auth.repository.RoleRepository;
 import com.imm.auth.service.RoleService;
 
@@ -50,7 +49,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Role findByName(RoleName roleName) {
+	public Role findByName(String roleName) {
 		return roleRepository.findByRoleName(roleName)
 				.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 	}

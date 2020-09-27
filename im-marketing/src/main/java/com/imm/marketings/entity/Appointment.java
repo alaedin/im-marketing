@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,9 +38,16 @@ public class Appointment {
 
 	private long tax;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties(value = { "appointments" }, allowSetters = true)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private AppointmentType appointmentType;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "appointment")
-	private List<PersonAppointment> personAppointments;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "appointment" }, allowSetters = true)
+	private Person person;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "appointment" }, allowSetters = true)
+	private Client client;
 }

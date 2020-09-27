@@ -5,8 +5,7 @@ spring:
     config:
       server:
         git:
-        # this url is updated on startup in main class to be the {project_path}/im-configuration 
-          uri: ${workspace_loc:config-server}/im-configuration
+          uri: ${user.dir}/im-configuration
 management:
   endpoints:
     web:

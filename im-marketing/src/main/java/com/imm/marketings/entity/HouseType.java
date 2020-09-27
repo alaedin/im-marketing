@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +33,6 @@ public class HouseType {
 	private String houseTypeName;
 
 	@OneToMany(mappedBy = "houseType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	@JsonIgnoreProperties(value={ "houseType" }, allowSetters= true)
 	private List<Address> addresses;
 }
