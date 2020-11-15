@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,7 +47,7 @@ public class Client {
 	private Phone phone;
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "client")
-	@JsonIgnoreProperties(value={ "appointment" }, allowSetters= true)
+	@JsonIgnore // (value={ "appointment" }, allowSetters= true)
 	private Appointment appointment;
 	
 }

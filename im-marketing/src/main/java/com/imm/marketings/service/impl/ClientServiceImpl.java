@@ -1,6 +1,7 @@
 package com.imm.marketings.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,4 +49,9 @@ public class ClientServiceImpl implements ClientService{
 	    public List<Client> findAll(){
 	        return clientRepository.findAll();
 	    }
+
+		@Override
+		public Set<Client> findWhereNotExistsInAppointment() {
+			return clientRepository.findWhereNotExistsInAppointment();
+		}
 }

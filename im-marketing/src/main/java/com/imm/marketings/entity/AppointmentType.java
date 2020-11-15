@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +30,9 @@ public class AppointmentType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String AppointmentTypeName;
-
-	@JsonIgnoreProperties(value={ "appointmentType" }, allowSetters= true)
+	private String appointmentTypeName;
+	
+	@JsonIgnore // (value={ "appointmentType" }, allowSetters= true)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "appointmentType")
 	private List<Appointment> appointments;
 }

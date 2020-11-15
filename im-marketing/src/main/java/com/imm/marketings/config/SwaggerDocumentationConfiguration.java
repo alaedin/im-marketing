@@ -16,7 +16,7 @@ public class SwaggerDocumentationConfiguration {
 
 
 	ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("im-marketing documentation")
+		return new ApiInfoBuilder().title("Report generator documentation")
 				.description(
 						"centalized documentation")
 				.termsOfServiceUrl("").version("0.0.1-SNAPSHOT")
@@ -29,6 +29,5 @@ public class SwaggerDocumentationConfiguration {
 				.apis(RequestHandlerSelectors.basePackage("com.imm.marketings.controller")).build()
 	                .apiInfo(apiInfo());
 	}
-
 
 }

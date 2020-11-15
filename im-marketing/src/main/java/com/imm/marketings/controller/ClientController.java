@@ -2,7 +2,8 @@ package com.imm.marketings.controller;
 
 import static com.imm.marketings.utility.ConstantUtils.ADD;
 import static com.imm.marketings.utility.ConstantUtils.DELETE;
-import static com.imm.marketings.utility.ConstantUtils.*;
+import static com.imm.marketings.utility.ConstantUtils.RESSOURCE_ALREADY_EXISTS;
+import static com.imm.marketings.utility.ConstantUtils.RESSOURCE_NOT_FOUND;
 import static com.imm.marketings.utility.ConstantUtils.SUCCESS_DELETE;
 import static com.imm.marketings.utility.ConstantUtils.SUCCESS_GET;
 import static com.imm.marketings.utility.ConstantUtils.SUCCESS_SAVE;
@@ -14,7 +15,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,11 +100,22 @@ public class ClientController {
 	@DeleteMapping(BASED_PATH + "/" + DELETE)
 	private ResponseEntity<?> delete(@Valid @RequestBody Client client) {
 		clientService.delete(client);
-		ValuesObject<?> persons = ValuesObject.builder()
+		ValuesObject<?> clients = ValuesObject.builder()
 				.outCode(0)
 				.message(message(SUCCESS_DELETE, OBJECT_NAME))
 				.body(client)
 				.build();
-		return ResponseEntity.ok(persons);
+		return ResponseEntity.ok(clients);
+	}
+	
+	@GetMapping(BASED_PATH + "/appointment" )
+	private ResponseEntity<?>getNotExistsInAppointment(){
+		
+		ValuesObject<?> clients = ValuesObject.builder()
+				.outCode(0)
+				.message(message(SUCCESS_GET, OBJECT_NAME))
+				.body(clientService.findWhereNotExistsInAppointment())
+				.build();
+		return ResponseEntity.ok(clients);
 	}
 }

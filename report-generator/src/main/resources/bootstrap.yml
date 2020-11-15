@@ -1,0 +1,10 @@
+spring:
+    application:
+        name: report-generator
+    cloud:
+        config:
+            uri: http://localhost:10002
+invoice:
+  path:
+    logo: /jasper/images/stackextend-logo.png
+    template: /jasper/valid_apointment.jrxml     

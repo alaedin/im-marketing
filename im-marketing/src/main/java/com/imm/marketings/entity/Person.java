@@ -63,8 +63,8 @@ public class Person {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Company company;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
-	@JsonIgnoreProperties(value = { "person" }, allowSetters = true)
-	private Appointment appointment;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+	@JsonIgnore // (value = { "appointments" }, allowSetters = true)
+	private Set<Appointment> appointments;
 
 }

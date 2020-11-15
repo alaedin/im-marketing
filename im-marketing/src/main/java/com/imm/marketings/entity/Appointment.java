@@ -1,11 +1,9 @@
 package com.imm.marketings.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,8 +41,8 @@ public class Appointment {
 	private AppointmentType appointmentType;
 
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JsonIgnoreProperties(value = { "appointment" }, allowSetters = true)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "appointments" }, allowSetters = true)
 	private Person person;
 
 	@OneToOne(cascade = CascadeType.ALL)
