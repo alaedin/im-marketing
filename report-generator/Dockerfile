@@ -1,6 +1,6 @@
 FROM maven:3.6.3-jdk-8 as maven
 
-ARG workspace.dir=discovery-service
+ARG workspace.dir=report-generator
 
 WORKDIR /$workspace.dir
 

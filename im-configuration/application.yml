@@ -1,0 +1,12 @@
+eureka:
+  instance:
+    hostname: config-server
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true         
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8767/eureka
+
+    
+    

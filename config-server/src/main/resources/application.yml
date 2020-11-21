@@ -5,7 +5,9 @@ spring:
     config:
       server:
         git:
-          uri: ${user.dir}/im-configuration
+#          uri: ${user.dir}/im-configuration 
+          uri: https://github.com/alaedin/im-configuration
+      
 management:
   endpoints:
     web:

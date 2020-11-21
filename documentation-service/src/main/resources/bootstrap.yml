@@ -1,7 +1,13 @@
 spring:
   application:
-    name: documentation-apps
+    name: documentation-service
   cloud:
     config:
       uri:
       - http://localhost:10002
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://config-server:10002
