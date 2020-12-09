@@ -2,7 +2,7 @@ server:
   port: 10004 
 spring:
   application:
-    name: documentation-apps
+    name: documentation-service
 swagger: 
   config: 
     refreshrate: 5000

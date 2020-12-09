@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.imm.report.generator.service.InvoiceReportService;
@@ -20,10 +21,14 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Service
 public class InvoiceReportServiceImpl implements InvoiceReportService {
 
+
+    @Value("${invoice.path.logo}")
+    private String logo_path;
+    
 	@SuppressWarnings("unchecked")
 	@Override
 	public byte[]  validApointments(List<?> values, Map<String, Object> parameters) throws JRException {
-		return createReport(values, "/jasper/valid_apointment2.jrxml", parameters==null ? new HashedMap(): parameters);
+		return createReport(values, "/jasper/valid_apointment.jrxml", parameters==null ? new HashedMap(): parameters);
 	}
 
 	@Override
@@ -40,6 +45,7 @@ public class InvoiceReportServiceImpl implements InvoiceReportService {
         JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(values);
         
         parameters.put("appointment", source);
+        parameters.put("logo", getClass().getResourceAsStream(logo_path));
  
         JasperPrint print = JasperFillManager.fillReport(report, parameters, source);
  

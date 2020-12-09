@@ -1,6 +1,6 @@
 eureka:
   instance:
-    hostname: config-server
+    hostname: localhost
   client:
     enabled: true
     register-with-eureka: true

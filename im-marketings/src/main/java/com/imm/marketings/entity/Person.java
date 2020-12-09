@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -48,13 +45,16 @@ public class Person {
 	@Email
 	private String email;
 
-	private String role;
+	
+	@JsonIgnoreProperties(value = { "persons" }, allowSetters = true)
+	@ManyToOne
+	private Role role;
 
-	@ManyToMany
-	@JoinTable(name = "pivot_person_role", joinColumns = { @JoinColumn(name = "person_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "role_id") })
-	@JsonIgnore
-	private Set<Role> roles;
+//	@ManyToMany
+//	@JoinTable(name = "pivot_person_role", joinColumns = { @JoinColumn(name = "person_id") }, inverseJoinColumns = {
+//			@JoinColumn(name = "role_id") })
+//	@JsonIgnore
+//	private Set<Role> roles;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Phone phone;

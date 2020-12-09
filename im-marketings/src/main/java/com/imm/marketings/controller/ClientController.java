@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.imm.marketings.entity.Client;
+import com.imm.marketings.entity.Phone;
 import com.imm.marketings.exception.ApiRequestException;
+import com.imm.marketings.repository.PhoneRepository;
 import com.imm.marketings.service.ClientService;
 import com.imm.marketings.utility.ValuesObject;
 
@@ -38,6 +40,8 @@ public class ClientController {
 	@Autowired
 	private ClientService clientService;
 	
+	@Autowired
+	private PhoneRepository phoneRepository;
 
 	
 	
@@ -75,6 +79,14 @@ public class ClientController {
 	private ResponseEntity<?> add(@Valid @RequestBody Client client) {
 		if (client.getId()!= 0 && clientService.findById(client.getId())!= null)
 			throw new ApiRequestException(message(OBJECT_NAME, RESSOURCE_ALREADY_EXISTS, client.getId()));
+		Phone phone = client.getPhone();
+		if (phone== null) {
+			throw new ApiRequestException("phone number required");
+		}
+		if (phone.getId()== 0 ) {
+			phone = phoneRepository.save(client.getPhone());
+			client.setPhone(phone);
+		}
 		clientService.create(client);
 		ValuesObject<?> persons = ValuesObject.builder()
 				.outCode(0)
@@ -107,7 +119,18 @@ public class ClientController {
 				.build();
 		return ResponseEntity.ok(clients);
 	}
-	
+
+	@DeleteMapping(BASED_PATH + "/" + DELETE+ "/{id}")
+	private ResponseEntity<?> delete(@Valid @PathVariable long id) {
+		clientService.delete(id);
+		ValuesObject<?> clients = ValuesObject.builder()
+				.outCode(0)
+				.message(message(SUCCESS_DELETE, OBJECT_NAME))
+				.body("")
+				.build();
+		return ResponseEntity.ok(clients);
+	}
+
 	@GetMapping(BASED_PATH + "/appointment" )
 	private ResponseEntity<?>getNotExistsInAppointment(){
 		

@@ -11,6 +11,6 @@ import com.imm.marketings.entity.Role;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
-	Set<Role> findByRoles( Role role);
+	Set<Role> findByRole( Role role);
 
 }

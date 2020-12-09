@@ -1,96 +1,251 @@
-version:  '3'
+version: '3.3'
 services:
-#  imm-nginx:
-#   container_name: imm-nginx
-#   image: nginx:1.19
-#   restart: always
-#   ports:
-#   - 80:80
-#   - 443:443
-#   volumes:
-#   - ./nginx/conf.d:/etc/nginx/conf.d
-#   depends_on:
-#   - imm-app
- 
-  imm-mysql:
-   container_name: imm-mysql
-   image: mysql/mysql-server:8.0
-   environment:
-     MYSQL_DATABASE: immarketing
-     MYSQL_USER: root
-     MYSQL_PASSWORD: root
-     MYSQL_ROOT_PASSWORD: root
-     MYSQL_ROOT_HOST: '%'
-   ports:
-     - 3306:3306
-   networks:
-     - backend
-   restart: always
-   volumes:
-     - ./dump:/docker-entrypoint-initdb.d
-     - mysql_data:/var/lib/mysql
-   expose:
-     - 3306 
-     
-     
-  imm-phpmyadmin:
-    container_name: imm-phpmyadmin
-    image: phpmyadmin/phpmyadmin:5.0.1
-    ports:
-      - 10002:80
-    links:
-      - imm-mysql
-    environment:
-      PMA_HOST: imm-mysql
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root
-    restart: always
-    networks:
-      - backend
-      
-  imm-app:
-    image: nginx:1.19
-    container_name: imm-app
-    restart: always
-    build:
-      context: ./im-marketing/
-      dockerfile: Dockerfile
-    volumes:
-      - ./im-marketing:/im-marketing
-      - ~/.m2:/root/.m2
-    ports:
-      - 10001:10001
-    expose:
-      - "10001"
-    command: mvn clean spring-boot:run
-    environment:
-     SPRING_DATASOURCE_USERNAME: root
-     SPRING_DATASOURCE_PASSWORD: root   
-     SPRING_DATASOURCE_URL: jdbc:mysql://imm-mysql:3306/immarketing?createDatabaseIfNotExist=true&serverTimezone=CET
-    networks:
-      - backend
-    depends_on:
-      - imm-mysql
-  
-  nginx:
-    container_name: imm-front
-    image: imm_front
-    build: 
-      context: ./imm-front/
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-      - "443:443"
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        links:
+            - im-mysql
+        env_file:
+            - ./.env
+        environment:
+            PMA_HOST: ${LOCAL_LISTEN_ADDR}
+            PMA_PORT: ${HOST_PORT_MYSQL}
+            PMA_USER: ${MYSQL_USER}
+            PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        restart: 
+            always
+        ports:
+            - 10001:80
+        depends_on:
+            - im-mysql       
+        networks:
+            - imm-network-back
+            
+                        
+    im-mysql:
+        container_name: im-mysql
+        build:
+            context: ./docker/mysql
+            dockerfile: Dockerfile
+        env_file:
+            - ./.env
+        environment:
 
-    networks:
-      - frontend
-  
+            ##
+            ## Debug?
+            ##
+            - DEBUG_COMPOSE_ENTRYPOINT
+            
+            ##
+            ## Adjust timezone
+            ##
+            - TIMEZONE
+            
+            ##
+            ## Adjust Root password
+            ##
+            - MYSQL_ROOT_PASSWORD
+            
+            ##
+            ## Socket directory Path
+            ##
+            - MYSQL_SOCKET_DIR=/tmp/mysql
+            
+            ##
+            ## Runtime settings
+            ##
+            - MYSQL_GENERAL_LOG=${MYSQL_GENERAL_LOG}
 
-volumes:
-  mysql_data: 
+        ports:
+            # [local-machine:]local-port:docker-port
+            - "${LOCAL_LISTEN_ADDR}:${HOST_PORT_MYSQL}:3306"
+
+        hostname: mysql
+        networks:
+            - imm-network-back
+            
+        volumes:
+            # ---- Format: ----
+            # HOST-DIRECTORY : DOCKER-DIRECTORY
       
+            # Mount logs
+            - ${WORKSPACE_PATH}/shared/mysql/log/${MYSQL_SERVER}:/var/log/mysql
+      
+            # Mount devilbox default overwrites
+            - ${WORKSPACE_PATH}/shared/mysql/etc/${MYSQL_SERVER}:/etc/mysql/conf.d
+      
+            # Mount devilbox user-defined cnf files in order
+            # to overwrite the MySQL server configuration
+            - ${WORKSPACE_PATH}/shared/mysql/cfg/${MYSQL_SERVER}:/etc/mysql/docker-default.d
+      
+            # Mount MySQL Data directory
+            - ${WORKSPACE_PATH}/shared/mysql/var/lib/mysql${MYSQL_SERVER}:/var/lib/mysql
+            
+    config-server:
+        container_name: config-server
+        build:
+            context: ./config-server
+            dockerfile: Dockerfile
+        image: config-server:latest
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8767/eureka
+        ports:
+            - 10002:10002
+        networks:
+            - imm-network-back
+        command: 
+            mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+        networks:
+            - imm-network-back        
+        logging:
+            driver: json-file
+        volumes:
+            - /home/alaeddine/.m2:/root/m2
+    discovery-service:
+        container_name: discovery-service
+        build:
+            context: ./discovery-service
+            dockerfile: Dockerfile
+        image: discovery-service:latest
+        ports:
+            - 8767:8767
+        restart:
+            always
+        volumes:
+            - ./docker:/docker
+        command: 
+            mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+        networks:
+            - imm-network-back
+        links:
+            - config-server
+        depends_on:
+            - config-server
+
+    proxy-service:
+        container_name: proxy-service
+        build:
+            context: ./proxy-service
+            dockerfile: Dockerfile
+        image: proxy-service:latest
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8767/eureka
+        ports:
+            - 10003:10003
+        restart:
+            always
+        volumes:
+            - ./docker:/docker
+        command: 
+                        mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+        networks:
+            - imm-network-back
+        links:
+            - config-server
+            - discovery-service
+        depends_on:
+            - discovery-service
+
+#    documentation-service:
+#        container_name: documentation-service
+#        build:
+#            context: ./documentation-service
+#            dockerfile: Dockerfile
+#        image: documentation-service:latest
+#        environment:
+#            eureka.client.enabled: 'true'
+#            eureka.host: discovery-service
+#            eureka.instance.preferIpAddress: 'true'
+#        ports:
+#            - 10004:10004
+#        restart:
+#            always
+#        volumes:
+#            - ./docker:/docker
+#        command: 
+#                        mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+#        networks:
+#            - imm-network-back
+#        links:
+#            - config-server
+#            - discovery-service
+#        depends_on:
+#            - discovery-service
+
+#    report-generator:
+#        container_name: report-generator
+#        build:
+#            context: ./report-generator
+#            dockerfile: Dockerfile
+#        image: report-generator:latest
+#        ports:
+#            - 10007:10007
+#        restart:
+#            always
+#        volumes:
+#            - ./docker:/docker
+#        command: 
+#                        mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+#        networks:
+#            - imm-network-back
+#        environment:
+#            - WAIT_HOSTS=documentation-service:10004
+#            - WAIT_HOSTS_TIMEOUT=300
+#            - WAIT_SLEEP_INTERVAL=15
+#            - WAIT_HOST_CONNECT_TIMEOUT=30
+
+#    im-marketings:
+#        container_name: im-marketings
+#        build:
+#            context: ./im-marketings
+#            dockerfile: Dockerfile
+#        image: im-marketings:latest
+#        ports:
+#            - 10006:10006
+#        restart:
+#            always
+#        volumes:
+#            - ./docker:/docker
+#        command: 
+#                        mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+#        networks:
+#            - imm-network-back
+#        environment:
+#            - WAIT_HOSTS=config-server:10002
+#            - WAIT_HOSTS_TIMEOUT=300
+#            - WAIT_SLEEP_INTERVAL=15
+#            - WAIT_HOST_CONNECT_TIMEOUT=30
+
+#    auth-service:
+#        container_name: auth-service
+#        build:
+#            context: ./auth-service
+#            dockerfile: Dockerfile
+#        image: auth-service:latest
+#        ports:
+#            - 10005:10005
+#        restart:
+#            always
+#        volumes:
+#            - ./docker:/docker
+#        command: 
+#            mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+#        networks:
+#            - imm-network-back
+#        environment:
+#            - WAIT_HOSTS=config-server:10002
+#            - WAIT_HOSTS_TIMEOUT=300
+#            - WAIT_SLEEP_INTERVAL=15
+#            - WAIT_HOST_CONNECT_TIMEOUT=30
+
 networks:
-  backend:
-  frontend:
-    driver: bridge
-
+    imm-network-back:
+        driver: bridge
+#        driver_opts:
+#          com.docker.network.enable_ipv6: "false"
+#        ipam:
+#          driver: default
+#          config:
+#            - subnet: 180.80.208.0/24
+volumes:
+    /home/alaeddine/.m2:
