@@ -1,0 +1,82 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title> {{title}} {{client.id}}</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<div>
+			<table class="example-full-width" cellspacing="0">
+				<tr>
+					<td>
+						<mat-form-field>
+							<textarea matInput placeholder="Nom" [(ngModel)]="client.firstName"></textarea>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field>
+							<textarea matInput placeholder="Prénom" [(ngModel)]="client.lastName"></textarea>
+						</mat-form-field>
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<mat-form-field>
+							<input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+								   placeholder="Date de naissance"
+								   [(ngModel)]="client.birthdate">
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field>
+							<input matInput placeholder="Email" [formControl]="emailFormControl">
+							<mat-error
+								*ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+								Merci de saisir un mail valide
+							</mat-error>
+							<mat-error *ngIf="emailFormControl.hasError('required')">
+								Email is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</td>
+				</tr>
+				<tr>
+
+					<td>
+
+						<mat-form-field>
+							<input type="countryKey" matInput placeholder="Country key"
+								   [(ngModel)]="client.phone.countryKey">
+							<mat-icon matSuffix>mode_edit</mat-icon>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field>
+							<input type="countryKey" matInput placeholder="Phone number"
+								   [(ngModel)]="client.phone.phoneNumber"
+								   minlength=8 maxlength=8>
+							<mat-icon matSuffix>mode_edit</mat-icon>
+						</mat-form-field>
+
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<mat-form-field class="example-full-width">
+							<textarea matInput placeholder="Address" [(ngModel)]="client.address"></textarea>
+						</mat-form-field>
+					</td>
+				</tr>
+				<tr>
+
+			</table>
+		</div>
+
+	</mat-card-content>
+	<mat-action-row class="column-align-right">
+		<button mat-button (click)="closeDialog()">Annuler</button>
+		<button mat-button class="btn-success success-background" (click)="createOrUpdateClient()">Enregistrer</button>
+
+	</mat-action-row>
+</mat-card>

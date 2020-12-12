@@ -1,0 +1,78 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title> {{title}} </mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<div>
+			<table class="example-full-width" cellspacing="0">
+				<tr>
+					<td>
+						<mat-form-field>
+							<input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+								   placeholder="Date de RDV"
+								   [(ngModel)]="appointment.appointmentDate">
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field>
+							<textarea matInput placeholder="Prix" [(ngModel)]="appointment.prix"></textarea>
+						</mat-form-field>
+					</td>
+
+					<td>
+						<mat-form-field>
+							<textarea matInput placeholder="taxe" [(ngModel)]="appointment.tax"></textarea>
+						</mat-form-field>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<mat-form-field appearance="fill">
+							<mat-select placeholder="Commerciale">
+								<mat-option *ngFor="let person of persons" [value]="person.id"
+											[(ngModel)]="appointment.person">
+									{{ appointment.person.firstName }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="fill">
+							<mat-select placeholder="Client" [value]="appointment.client.id">
+								<mat-option *ngFor="let client of clients"
+											[(ngModel)]="appointment.client">
+									{{ appointment.client.lastName }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="fill">
+							<mat-select placeholder="Type de RDV"  (change)="selectAppointmentType($event)">
+								<option label= {{appointment.appointmentType.appointmentTypeName}} ></option>
+
+								<mat-option *ngFor="let appointmentType of appointmentTypes"
+											[value]="appointment.appointmentType.id	"
+											[(ngModel)]="appointment.appointmentType" >
+									{{appointment.appointmentType.appointmentTypeName}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</td>
+
+				</tr>
+
+
+			</table>
+		</div>
+
+	</mat-card-content>
+	<mat-action-row class="column-align-right">
+		<button mat-button (click)="closeDialog()">Annuler</button>
+		<button mat-button class="btn-success success-background" (click)="createOrUpdateAppointment()">Enregistrer
+		</button>
+
+	</mat-action-row>
+</mat-card>

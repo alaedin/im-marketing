@@ -1,0 +1,86 @@
+<div class="example-container mat-elevation-z8">
+
+	<mat-card class="example-card">
+		<mat-card-header>
+			<div class="div-left">
+				<b><i><h3>Liste des Rendez-vous</h3></i></b>
+			</div>
+			<div class="div-right">
+				<button mat-mini-fab color="accent" (click)="openDialog()" class='success-background'>
+					<mat-icon>plus_one</mat-icon>
+				</button>
+			</div>
+
+		</mat-card-header>
+		<mat-card-content>
+			<mat-table #table [dataSource]="dataSource">
+				<!-- Position Column -->
+				<ng-container matColumnDef="id">
+					<mat-header-cell *matHeaderCellDef> No.</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+				</ng-container>
+				<!-- firstName Column -->
+				<ng-container matColumnDef="appointmentDate">
+					<mat-header-cell *matHeaderCellDef> Date de RDV</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.appointmentDate | date:'dd-MM-yyyy'}} </mat-cell>
+				</ng-container>
+				<!-- lastName Column -->
+				<ng-container matColumnDef="prix">
+					<mat-header-cell *matHeaderCellDef> prix</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.prix}} </mat-cell>
+				</ng-container>
+				<!-- birthdate Column -->
+				<ng-container matColumnDef="tax">
+					<mat-header-cell *matHeaderCellDef> taxe</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.tax}} </mat-cell>
+				</ng-container>
+				<!-- address Column -->
+				<ng-container matColumnDef="person">
+					<mat-header-cell *matHeaderCellDef> Commerçant</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.person.firstName}} {{element.person.lastName}} </mat-cell>
+				</ng-container>
+
+				<!-- email Column -->
+				<ng-container matColumnDef="client">
+					<mat-header-cell *matHeaderCellDef> client</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.client.firstName}} {{element.client.lastName}} </mat-cell>
+				</ng-container>
+				<!-- email Column -->
+				<ng-container matColumnDef="appointmentType">
+					<mat-header-cell *matHeaderCellDef> Type de RDV</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.appointmentType.appointmentTypeName}} </mat-cell>
+				</ng-container>
+
+				<!-- Action Column -->
+				<ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+					<mat-cell *matCellDef="let element" class="column-align-right">
+						<button mat-icon-button
+								color="primary"
+								matTooltip="Edit house Type"
+								(click)="openDialog(element.id)">
+							<mat-icon>create</mat-icon>
+						</button>&nbsp;
+						<button mat-icon-button
+								color="warn"
+								matTooltip="Delete house Type"
+								type="button"
+								(click)="deleteAppointment(element.id)">
+							<mat-icon>delete</mat-icon>
+						</button>&nbsp;
+					</mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			</mat-table>
+			<mat-paginator #paginator
+						   [pageSize]="10"
+						   [pageSizeOptions]="[5, 10, 20]"
+						   [showFirstLastButtons]="true">
+			</mat-paginator>
+		</mat-card-content>
+
+	</mat-card>
+
+
+</div>

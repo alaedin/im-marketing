@@ -1,0 +1,23 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title >{{title}}</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<div >
+			<table class="example-full-width" cellspacing="0">
+				<tr>
+					<td>
+						<mat-form-field>
+							<textarea matInput placeholder="Nom" [(ngModel)]="houseType.houseTypeName"></textarea>
+						</mat-form-field>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+	</mat-card-content>
+	<mat-card-actions align="end">
+		<button mat-button>Annuler</button>
+		<button mat-button class="btn-success" (click)="createOrUpdateClient()">Enregistrer</button>
+	</mat-card-actions>
+</mat-card>

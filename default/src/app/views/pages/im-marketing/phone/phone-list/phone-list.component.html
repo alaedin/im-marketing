@@ -1,0 +1,58 @@
+<div class="example-container mat-elevation-z8">
+
+
+	<mat-card class="example-card">
+		<mat-card-header>
+			<mat-card-title>Liste des contactes</mat-card-title>
+		</mat-card-header>
+		<mat-card-content>
+			<mat-table #table [dataSource]="dataSource">
+				<!-- countryKey Column -->
+				<ng-container matColumnDef="countryKey">
+					<mat-header-cell *matHeaderCellDef> Clé du pays</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.countryKey}} </mat-cell>
+				</ng-container>
+				<!-- phoneNumber Column -->
+				<ng-container matColumnDef="phoneNumber">
+					<mat-header-cell *matHeaderCellDef> Numéro du téléphone</mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.phoneNumber}} </mat-cell>
+				</ng-container>
+
+				<!-- zone Column -->
+				<ng-container matColumnDef="zone">
+					<mat-header-cell *matHeaderCellDef> Zone </mat-header-cell>
+					<mat-cell *matCellDef="let element"> {{element.zone}} </mat-cell>
+				</ng-container>
+				<!-- Action Column -->
+				<ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+					<mat-cell *matCellDef="let element" class="column-align-right">
+						<button mat-icon-button
+								color="primary"
+								matTooltip="Edit house Type"
+								(click)="openDialog(element.id)">
+							<mat-icon>create</mat-icon>
+						</button>&nbsp;
+						<button mat-icon-button
+								color="warn"
+								matTooltip="Delete house Type"
+								type="button"
+								(click)="deletePhone(element.id)">
+							<mat-icon>delete</mat-icon>
+						</button>&nbsp;
+					</mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			</mat-table>
+			<mat-paginator #paginator
+						   [pageSize]="10"
+						   [pageSizeOptions]="[5, 10, 20]"
+						   [showFirstLastButtons]="true">
+			</mat-paginator>
+		</mat-card-content>
+
+	</mat-card>
+
+
+</div>
