@@ -61,7 +61,7 @@ public class RoleController {
 
 	@PostMapping(BASED_PATH + "/" + ADD)
 	private ResponseEntity<?> add(@Valid @RequestBody Role role) {
-		if (roleService.existsById(role.getId())) {
+		if (role.getId()!= null && roleService.existsById(role.getId())) {
 			throw new DataResourceException(message(OBJECT_NAME, RESSOURCE_ALREADY_EXISTS, role.getId()));
 		}
 		roleService.save(role);
